@@ -4,7 +4,11 @@ import os
 import socket
 
 #script for making distributable
-#pyinstaller --add-data 'cmd:.' -F dev.py
+#pyinstaller --add-data 'cmd:.' dev.py
+
+#or 
+#pyinstaller -F dev.py
+#cp cmd ./dist/
 
 #routines
 def is_connected():
@@ -126,7 +130,8 @@ subprocess.run(['mkdir',pathToYubico])
 pathToKeys=os.path.join(pathToYubico,'u2f_keys')
 #pathToBackup
 pathToBackup=os.path.join(pathToFolder,backupFolder)
-os.mkdir(pathToBackup)
+if not os.path.exists(pathToBackup):
+    os.mkdir(pathToBackup)
 #pathToCmd
 pathToCmd=os.path.join(pathToFolder,commandFileName)
 #lineToInset
