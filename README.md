@@ -15,7 +15,7 @@ or to single file using
 ```cp cmd ./dist/```
 
 ### Dependencies for Building
-Any version of Ubuntu, Python 3.7, Pyinstall. Anaconda Python management platform in prefered.  
+Any version of Ubuntu, Python 3.7, Pyinstall. Anaconda Python management platform in preferred.  
 
 ## Official Practices and Limitations
 
