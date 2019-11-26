@@ -1,19 +1,15 @@
 # YubiKey4Linux
 An easy-to-use Yubikey installation tool for Ubuntu (and other Debian Distros)
 
-## Introduction
-
-Yubikey is a portable USB based biometric authentication device developed by Yubico that provides secure login and authentication to a variety of popular services and platforms. It provides intuitive installation process for some popular platforms such as Windows and Google Account, but installation process for Linux still remains complicated.
-
 ## Project Overview
-Currently Yubikey installation process for Linux distributions is not an easy and simply process. This project aims to bring easy and convenient installation to Ubuntu, one of the most popular distribution of Debian Linux.
+Yubikey is a portable USB based biometric authentication device developed by Yubico that provides secure login and authentication to a variety of popular services and platforms. It provides intuitive installation processes for some popular platforms such as Windows and Google Account, but installation process for Linux still remains complicated. This project aims to bring easy and convenient installation to Ubuntu, one of the most popular distribution of Debian Linux.
 
 ## Dependencies
 Any version of Ubuntu, Python 3.7, Pyinstall. Anaconda Python management platform in prefered.
 
 ## Official Practices and Limitations
 
-Currently all methods of installing Yubikey authentication to Ubuntu requires configuring YubiKey through terminal commands, testing YubiKey configuration through terminal commands, and finally enabling YubiKey. The whole process will take a long time to implement and test the result of installation. Along the process, several system files will be touched and modified along the way, if configured improperly, system and root privileges may be locked and cannot properly function without system re-imaging.
+The current method of installing Yubikey to Ubuntu requires multiple steps involving terminal commands, testing and configuring YubiKey, and finally enabling YubiKey. The whole process will take a long time and several system files will be touched and modified along the way. If configured improperly, system and root privileges may be locked and cannot properly function without system re-imaging.
 
 ## Proposed Approach and Advantage
 
