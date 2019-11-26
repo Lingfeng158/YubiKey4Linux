@@ -4,7 +4,17 @@ An easy-to-use Yubikey installation tool for Ubuntu (and other Debian Distros)
 ## Project Overview
 Yubikey is a portable USB based biometric authentication device developed by Yubico that provides secure login and authentication to a variety of popular services and platforms. It provides intuitive installation processes for some popular platforms such as Windows and Google Account, but installation process for Linux still remains complicated. This project aims to bring easy and convenient installation to Ubuntu, one of the most popular distribution of Debian Linux.  
 
-## Dependencies
+## Software Execution and Build
+*With Python 3.7, the tool can be executed through `dev.py`
+*Without Python, the pre-build can be found at `dist/dev`
+
+The tool can be built from python to independent packages using
+```pyinstaller --add-data 'cmd:.' dev.py```
+or to single file using
+```pyinstaller -F dev.py```
+```cp cmd ./dist/```
+
+### Dependencies for Building
 Any version of Ubuntu, Python 3.7, Pyinstall. Anaconda Python management platform in prefered.  
 
 ## Official Practices and Limitations
