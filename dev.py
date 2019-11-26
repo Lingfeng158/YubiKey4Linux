@@ -2,15 +2,22 @@ import subprocess
 import sys
 import os
 import socket
-
+from sys import exit
 #script for making distributable
+#build project as folder
 #pyinstaller --add-data 'cmd:.' dev.py
-
+#executable located at /dist/dev/dev
+#
 #or 
+#build project as single file
 #pyinstaller -F dev.py
 #cp cmd ./dist/
+#executable located at /dist/dev
 
 #routines
+#check for internet connection
+#testing on google servers
+#return true if connected
 def is_connected():
     try:
         # connect to the host -- tells us if the host is actually
@@ -21,6 +28,7 @@ def is_connected():
         pass
     return False
 
+#add YubiKey to System
 def adding_key(pathToKeys):
     #Ensure YubiKey
     userResponse=''
@@ -38,6 +46,7 @@ def adding_key(pathToKeys):
         else:
             print("Input Invalid")
 
+#add backup YubiKey to System
 def adding_backup(pathToKeys):
     userResponse=''
     print("Please Insert Yubikey and Continue")
@@ -52,7 +61,9 @@ def adding_backup(pathToKeys):
             return
         else:
             print("Input Invalid")
-            
+
+#uninstall package and erase trace when installation failed
+#NOTE: At this point, privileges of folder /etc/pam.d and its content are modified             
 def testingUninstaller(pathToBackup, pathToYubico):
     pathToSudo=os.path.join(pathToBackup,'sudo')
     subprocess.run(['rm', '/etc/pam.d/sudo'])
@@ -65,6 +76,7 @@ def testingUninstaller(pathToBackup, pathToYubico):
     subprocess.run(['sudo','chmod', '644', '/etc/pam.d/sudo'])
     os.system('sudo apt-get purge libpam-u2f')
 
+#uninstall package from a system with fully installed YubiKey U2F authentication.
 def Uninstaller(pathToBackup, pathToYubico, filename):
     pathToFile=os.path.join(pathToBackup,filename)
     originFile=os.path.join('/etc/pam.d/',filename)
@@ -81,12 +93,14 @@ def Uninstaller(pathToBackup, pathToYubico, filename):
     print("Uninstallation Finished")
     print("Cleaning Up Finished")
 
+#determining the version of system automatically
 def autoVersionChecking():
     #for autochecking
     fd=open('/etc/issue','r')
     lines=fd.readlines()
     return float(lines[0][7:12])>17.05
 
+#determining the version of system based on user's manual input
 def manualVersionInput():
     userResponse=''
     while(userResponse=='' or (userResponse[0] not in ['y','Y','n','N'])):
@@ -98,6 +112,7 @@ def manualVersionInput():
         else:
             print("Input invalid")
 
+#write line to file
 def fileIO(pathToFile):
     with open(pathToFile,'r+') as fd:
         lineread=''
@@ -108,11 +123,8 @@ def fileIO(pathToFile):
         fd.seek(pos)
         fd.write(lineToInsert)
         fd.write(content)
-            
-#checking internet connection
-if not is_connected():
-    print("No network present!")
-    exit()
+
+
 
 #global variable
 
@@ -140,6 +152,8 @@ lineToInsert='auth       required   pam_u2f.so\n'
 filePath='/etc/pam.d/gdm-password'
 fileName='gdm-password'
 
+
+
 #Step 1 gathering system information
 #Checking Version of Ubuntu        
 userResponse=''
@@ -162,14 +176,17 @@ if(not isNewVersion):
     filePath='/etc/pam.d/lightdm'
     fileName='lightdm'
 
+#Step 2: ask user what to do
 userResponse=''
 while(userResponse=='' or (userResponse[0] not in ['I','i','U','u','t','T'])):
     userResponse=input("What Do you want to do? [I]nstall/[U]ninstall/[T]esting uninstall\n")
     if userResponse[0] in ['U','u']:
         print('Uninstalling Yubikey')
+        #step 3 for uninstalation process
         Uninstaller(pathToBackup, pathToYubico, fileName)
         exit()
     elif userResponse[0]in ['t','T']:
+        #step 3 for uninstallation process after a failed installation
         print('Undoing Changes Made for Testing')
         testingUninstaller(pathToBackup, pathToYubico)
         print('Done')
@@ -180,12 +197,17 @@ while(userResponse=='' or (userResponse[0] not in ['I','i','U','u','t','T'])):
     else:
         print('Invalid Input')
 
-        
+#Step 3 for installation        
+#checking internet connection
+if not is_connected():
+    print("No network present!")
+    exit()
 
 subprocess.run(['chmod', '+x', pathToCmd])
 print("Executing Commands")
 subprocess.run(['sudo',pathToCmd])
 
+#install necessary file and modules
 print("Setting Up Modules")
 adding_key(pathToKeys)
 userResponse=''
